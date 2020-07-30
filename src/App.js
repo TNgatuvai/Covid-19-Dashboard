@@ -16,10 +16,17 @@ function App() {
   const [countryInfo, setCountryInfo] = useState({});
 
   // USEEFFECT = Runs a piece of code based on a given condition //
+  // The code inside here will run once when the component loads and not again //
+  // async -> send a request, wait for it, do something with it
   useEffect(() => {
-    // The code inside here will will run once when the component loads and not again //
-    // async -> send a request, wait for it, do something with it
+    fetch("https://disease.sh/v3/covid-19/all")
+      .then((response) => response.json())
+      .then((data) => {
+        setCountryInfo(data);
+      });
+  }, []);  
 
+  useEffect(() => {  
     const getCountriesData = async () => {
       await fetch("https://disease.sh/v3/covid-19/countries")
         .then((response) => response.json())
