@@ -9,11 +9,14 @@ import {
 import InfoBox from "./InfoBox";
 import Map from "./Map";
 import "./App.css";
+import Table from './Table';
+import { sortData } from "./util";
 
 function App() {
   const [countries, setCountries] = useState([]);
   const [country, setCountry] = useState("worldwide");
   const [countryInfo, setCountryInfo] = useState({});
+  const [tableData, setTableData] = useState([]);
 
   // USEEFFECT = Runs a piece of code based on a given condition //
   // The code inside here will run once when the component loads and not again //
@@ -32,10 +35,12 @@ function App() {
         .then((response) => response.json())
         .then((data) => {
           const countries = data.map((country) => ({
-            name: country.country,
-            value: country.countryInfo.iso2,
+            name: country.country, // United States, United Kingdom
+            value: country.countryInfo.iso2, // UK, USA, FR
           }));
 
+          const sortedData = sortData(data);
+          setTableData(sortedData);
           setCountries(countries);
         });
     };
@@ -97,8 +102,8 @@ function App() {
       <Card className="app__right">
         <CardContent>
           <h3>Live Cases by Country</h3>
-          {/* Table */}
-          <h3>Worldwide new cases</h3>
+          <Table countries={tableData} />
+          <h3>Worldwdidenewcases</h3>
           {/* Graph */}
         </CardContent>
       </Card>
